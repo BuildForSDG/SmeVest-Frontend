@@ -1,4 +1,4 @@
-import app from '../src/app';
+import app from '../src/App';
 
 describe('app module', () => {
   test('it exists', async () => {
@@ -6,7 +6,7 @@ describe('app module', () => {
   });
 
   test('it returns program name with SDGs', async () => {
-    const result = await app();
+    const result = app();
 
     const sdgPos = (result || '').indexOf('SDG');
     expect(sdgPos).toBeGreaterThanOrEqual(0);
