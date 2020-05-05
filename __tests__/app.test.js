@@ -1,4 +1,5 @@
-import app from '../src/App';
+/* eslint-disable import/extensions */
+import app from '../src/App.js';
 
 describe('app module', () => {
   test('it exists', async () => {
