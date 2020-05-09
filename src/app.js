@@ -1,3 +1,13 @@
-const app = async () => '#BuildforSDG';
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Header from './components/Header/Header';
 
-export default app;
+function App() {
+  return (
+    <Router>
+      <Header />
+    </Router>
+  );
+}
+
+export default App;

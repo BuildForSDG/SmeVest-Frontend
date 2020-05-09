@@ -32,14 +32,28 @@
     "url": "https://github.com/BuildForSDG/js-starter/issues"
   },
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "@material-ui/core": "^4.9.13",
+    "@material-ui/icons": "^4.9.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^25.4.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-react": "^7.19.0",
     "jest": "^25.4.0",
     "parcel-bundler": "^1.12.4"
   },
