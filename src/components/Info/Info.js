@@ -32,32 +32,38 @@ const Info = () => (
           </div>
         </section>
         <section className="InfoDetails">
-          <div className="Details">
-            <div>
-              <h2>
-                <OfflineBolt />
-                Fast Connection
-              </h2>
-              <p>A reliable system that offers fast connection</p>
-            </div>
-            <div>
-              <h2>
-                <Security />
-                Secured Connection
-              </h2>
-              <p>Your connection is secured with this system</p>
-            </div>
-            <div>
-              <h2>
-                <SupervisorAccount />
-                SME/Investor
-              </h2>
-              <p>The right connection is waiting for you</p>
-            </div>
-          </div>
-          <div className="Image">
-            <img src={infoImage} alt="Info" />
-          </div>
+          <Row>
+            <Col md>
+              <div className="Details">
+                <div>
+                  <h2>
+                    <OfflineBolt />
+                    Fast Connection
+                  </h2>
+                  <p>A reliable system that offers fast connection</p>
+                </div>
+                <div>
+                  <h2>
+                    <Security />
+                    Secured Connection
+                  </h2>
+                  <p>Your connection is secured with this system</p>
+                </div>
+                <div>
+                  <h2>
+                    <SupervisorAccount />
+                    SME/Investor
+                  </h2>
+                  <p>The right connection is waiting for you</p>
+                </div>
+              </div>
+            </Col>
+            <Col sm>
+              <div className="Image">
+                <img src={infoImage} alt="Info" />
+              </div>
+            </Col>
+          </Row>
         </section>
       </Container>
     </div>

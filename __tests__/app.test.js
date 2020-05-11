@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import App from '../src/App.js';
-import Header from '../src/components/Header/Header.js';
+import App from '../src/App';
+import Header from '../src/components/Header/Header';
 
 describe('<App /> Component', () => {
   test('render App component', () => {

@@ -280,11 +280,6 @@
     font-size: 0.95rem;
   }
 
-  .Info .InfoDetails {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
   .Info .Details {
     display: flex;
     flex-direction: column;
