@@ -7,6 +7,6 @@ module.exports = {
   setupFilesAfterEnv: ['../setupTests.js'],
   testPathIgnorePatterns: ['../node_modules/'],
   moduleNameMapper: {
-    '.+\\.(css|styl|less|sass|scss|png|jpg|webp|ttf|woff|woff2)$': 'identity-obj-proxy'
-  }
+    '.+\\.(css|styl|less|sass|scss|png|jpg|webp|ttf|woff|woff2)$': 'identity-obj-proxy',
+  },
 };
