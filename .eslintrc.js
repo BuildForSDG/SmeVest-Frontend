@@ -28,12 +28,13 @@ module.exports = {
   rules: {
     'import/extensions': [
       'error',
-      'always',
+      'ignorePackages',
       {
-        ignorePackages: true,
-        pattern: {
-          js: 'never'
-        }
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+        mjs: 'never'
       }
     ]
   }
