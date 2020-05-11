@@ -6,7 +6,7 @@
   "trailingComma": "none",
   "overrides": [
     {
-      "files": "*.json",
+      "files": "*.json, *.css",
       "options": {
         "parser": "json"
       }

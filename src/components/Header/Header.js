@@ -5,13 +5,13 @@ import { Dashboard, ExitToApp } from '@material-ui/icons';
 import './Header.css';
 import logo from '../../assets/images/logo.png';
 
-const loggedIn = true;
+const loggedIn = false;
 const Header = () => (
   <Navbar className="Header" expand="xl">
     <Container>
       <Navbar.Brand>
         <Link to="/">
-          <img src={logo} alt="Logo" />
+          <img src={logo} alt="Logo" className="logo" />
         </Link>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />

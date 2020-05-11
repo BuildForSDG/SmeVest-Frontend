@@ -8,7 +8,7 @@
   font-family: 'Karla', sans-serif;
 }
 
-.Info .InfoSocial {
+.Info .Icons {
   position: absolute;
   border-radius: 1rem;
   background: #fff;
@@ -23,7 +23,7 @@
   box-shadow: 0 0 0.5rem #ddd;
 }
 
-.Info .Icon path {
+.Info .Icon > .Icons-svg {
   animation-name: zoom;
   animation-duration: 2s;
   animation-fill-mode: both;
@@ -31,7 +31,7 @@
   animation-direction: alternate-reverse;
 }
 
-.Info .Icon p {
+.Info .Icon .Icons-Text {
   margin: 0.3rem 0;
   font-size: 1.1rem;
   font-family: 'Karla', sans-serif;
@@ -45,14 +45,16 @@
   padding-right: 2rem;
 }
 
-.Info .Details {
+.Detail {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
 }
 
-.Info .Details div {
+.Detail .fast,
+.Detail .secure,
+.Detail .connect {
   padding: 1rem 1rem 6rem;
   background: #fff;
   border-radius: 0.35rem;
@@ -62,72 +64,43 @@
   transition: all 500ms ease;
 }
 
-.Info .Details div:nth-child(1) {
+.Detail .fast {
   box-shadow: 0 -3px 0 #d4475a;
   margin-left: -10rem;
 }
 
-.Info .Details div:nth-child(1) h2 svg {
-  color: #d4475a;
-}
-
-.Info .Details div:nth-child(1):hover {
-  box-shadow: 0 -3px 0 #fff;
-  background: #d4475a;
-  color: #fff;
-  margin-left: 0;
-}
-
-.Info .Details div:nth-child(1):hover p,
-.Info .Details div:nth-child(2):hover p,
-.Info .Details div:nth-child(3):hover p {
-  color: #fff;
-}
-
-.Info .Details div:nth-child(2) {
+.Detail .secure {
   box-shadow: 0 -3px 0 #47d486;
 }
 
-.Info .Details div:nth-child(2) h2 svg {
-  color: #47d486;
-}
-
-.Info .Details div:nth-child(2):hover {
-  box-shadow: 0 -3px 0 #fff;
-  background: #47d486;
-  color: #fff;
-  margin-left: -10rem;
-}
-
-.Info .Details div:nth-child(3) {
+.Detail .connect {
   box-shadow: 0 -3px 0 #4789d4;
   margin-left: -10rem;
 }
 
-.Info .Details div:nth-child(3) h2 svg {
+.Detail-Icon {
+  margin-right: 0.3rem;
+}
+
+.fast .Detail-Icon {
+  color: #d4475a;
+}
+
+.secure .Detail-Icon {
+  color: #47d486;
+}
+
+.connect .Detail-Icon {
   color: #4789d4;
 }
 
-.Info .Details div:nth-child(3):hover {
-  box-shadow: 0 -3px 0 #fff;
-  background: #4789d4;
-  color: #fff;
-  margin-left: 0;
-}
-
-.Info .Details div:nth-child(1):hover svg,
-.Info .Details div:nth-child(2):hover svg,
-.Info .Details div:nth-child(3):hover svg {
-  color: #fff;
-}
-
-.Info .Details div h2,
-.Info .Details div p {
+.Detail-Heading,
+.Detail-Text {
   margin: 0;
   font-family: 'Baloo 2', sans-serif;
 }
 
-.Info .Details div h2 {
+.Detail-Heading {
   font-weight: 400;
   text-transform: uppercase;
   font-size: 1.2rem;
@@ -141,17 +114,43 @@
   align-items: center;
 }
 
-.Info .Details div h2 svg {
-  margin-right: 0.3rem;
-}
-
-.Info .Details div p {
+.Detail-Text {
   color: #b6b0b0;
   font-family: Karla, sans-serif;
   margin: 0.3rem 0;
 }
 
-.Info .Image img {
+.Detail .fast:hover {
+  box-shadow: 0 -3px 0 #fff;
+  background: #d4475a;
+  color: #fff;
+  margin-left: 0;
+}
+
+.Detail .secure:hover {
+  box-shadow: 0 -3px 0 #fff;
+  background: #47d486;
+  color: #fff;
+  margin-left: -10rem;
+}
+
+.Detail .connect:hover {
+  box-shadow: 0 -3px 0 #fff;
+  background: #4789d4;
+  color: #fff;
+  margin-left: 0;
+}
+
+.Detail .fast:hover .Detail-Icon,
+.Detail .fast:hover .Detail-Text,
+.Detail .secure:hover .Detail-Icon,
+.Detail .secure:hover .Detail-Text,
+.Detail .connect:hover .Detail-Icon,
+.Detail .connect:hover .Detail-Text {
+  color: #fff;
+}
+
+.Image-responsive {
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 2px 2px 0.3rem rgba(0, 0, 0, 0.2), -2px 0 0.3rem rgba(0, 0, 0, 0.2);
@@ -161,17 +160,8 @@
   display: block;
 }
 
-@keyframes zoom {
-  from {
-    transform: scale(0.9);
-  }
-  to {
-    transform: scale(1.04);
-  }
-}
-
 /* Info Section 2 */
-.Info2 {
+.Works {
   width: 100%;
   padding: 8rem 0 10rem;
   box-sizing: border-box;
@@ -198,34 +188,24 @@
   align-self: center;
 }
 
-.Info2Details h2 {
+.Work-Detail-Heading {
   font-size: 2rem;
   color: #aaa;
 }
 
-.Info2Details p {
+.Work-Detail-Text {
   display: flex;
   align-items: center;
   font-size: 1.2rem;
 }
 
-.Info2Details p svg {
+.Work-Detail-Icon {
   margin-right: 0.5rem;
   border-right: 2px solid #47d486;
   padding-right: 0.3rem;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* Ready Section Footer Friend */
-
 .Ready {
   width: 400px;
   background: #fff;
@@ -242,11 +222,11 @@
   font-family: 'Karla', sans-serif;
 }
 
-.Ready h2 {
+.Ready-Text {
   font-size: 1.2rem;
 }
 
-.Ready a {
+.Ready-Btn {
   text-decoration: none;
   font-size: 0.95rem;
   padding: 0.4rem 1.5rem;
@@ -255,67 +235,65 @@
   border-radius: 1rem;
   color: #fff;
   box-shadow: 0 2px 1px #1fc2d8, 0 -1px 1px #1fc2d8;
-  border: 1px solid #4ad6e9;
+  border: 1px solid #4dd7e9;
   margin: 0.5rem 0;
   display: inline-block;
 }
 
-.Ready a:hover {
+.Ready-Btn:hover {
   background: transparent;
   color: #212226;
-  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.7), 0px 0px #fff;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.7), 0 0 #fff;
   box-sizing: border-box;
   text-decoration: none;
 }
 
-@media screen and (max-width: 768px) {
-  .Info .InfoSocial {
+@media screen and (max-width: 1200px) {
+  .Info .Icons {
     position: absolute;
     width: 350px;
     right: 50%;
     transform: translateX(50%);
   }
 
-  .Info .Icon p {
+  .Info .Icon .Icons-Text {
     font-size: 0.95rem;
   }
 
-  .Info .Details {
+  .Info .Detail {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
   }
 
-  .Info .Details div:nth-child(1),
-  .Info .Details div:nth-child(3) {
-    margin-left: 0rem;
-  }
-
-  .Info .Details div:nth-child(2):hover {
+  .Info .Detail .fast,
+  .Info .Detail .connect {
     margin-left: 0;
   }
 
-  .Info2 {
+  .Info .Detail .secure:hover {
+    margin-left: 0;
+  }
+
+  .Works {
     padding: 5rem 0;
   }
 
   .LeftImage {
     order: 2;
-    margin-top: 2rem;
     justify-self: center;
     background-position: center center;
     text-align: center;
-    margin-bottom: 3rem;
-    margin-left: 1.3em;
+    margin: 0 auto 2rem;
   }
 
-  .Info2Details h2 {
+  .Work-Detail-Heading {
     font-size: 1.6rem;
     text-align: center;
   }
 
-  .Info2Details p {
+  .Work-Detail-Text {
     margin: 2rem 0;
     align-items: flex-start;
     font-size: 1rem;
@@ -324,5 +302,59 @@
 
   .Ready {
     width: 350px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .Info .Icons {
+    width: 300px;
+  }
+
+  .Info .Icon .Icons-Text {
+    font-size: 0.9rem;
+  }
+
+  .Works {
+    padding: 3rem 0 8rem;
+  }
+
+  .LeftImage {
+    width: 280px;
+    height: 280px;
+    margin: 0 auto 2rem;
+    background-position: center center;
+  }
+
+  .Work-Detail-Heading {
+    margin-bottom: 0;
+  }
+
+  .Ready {
+    width: 300px;
+    bottom: -3.6rem;
+  }
+
+  .Ready-Text {
+    font-size: 1rem;
+  }
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(0.9);
+  }
+
+  to {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }

@@ -13,54 +13,55 @@ import './Info.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import infoImage from '../../assets/images/info-image.webp';
 
+const loggedIn = false;
 const Info = () => (
   <>
     <div className="Info">
       <Container>
-        <section className="InfoSocial">
+        <section className="Icons">
           <div className="Icon">
-            <OfflineBolt style={{ fontSize: 60, color: '#d4475a' }} />
-            <p>Fast</p>
+            <OfflineBolt className="Icons-svg" style={{ fontSize: 60, color: '#d4475a' }} />
+            <p className="Icons-Text">Fast</p>
           </div>
           <div className="Icon">
-            <Security style={{ fontSize: 60, color: '#47d486' }} />
-            <p>Secure</p>
+            <Security className="Icons-svg" style={{ fontSize: 60, color: '#47d486' }} />
+            <p className="Icons-Text">Secure</p>
           </div>
           <div className="Icon">
-            <SupervisorAccount style={{ fontSize: 60, color: '#4789d4' }} />
-            <p>Connect</p>
+            <SupervisorAccount className="Icons-svg" style={{ fontSize: 60, color: '#4789d4' }} />
+            <p className="Icons-Text">Connect</p>
           </div>
         </section>
-        <section className="InfoDetails">
+        <section className="Details">
           <Row>
             <Col md>
-              <div className="Details">
-                <div>
-                  <h2>
-                    <OfflineBolt />
+              <div className="Detail">
+                <div className="fast">
+                  <h2 className="Detail-Heading">
+                    <OfflineBolt className="Detail-Icon" />
                     Fast Connection
                   </h2>
-                  <p>A reliable system that offers fast connection</p>
+                  <p className="Detail-Text">A reliable system that offers fast connection</p>
                 </div>
-                <div>
-                  <h2>
-                    <Security />
+                <div className="secure">
+                  <h2 className="Detail-Heading">
+                    <Security className="Detail-Icon" />
                     Secured Connection
                   </h2>
-                  <p>Your connection is secured with this system</p>
+                  <p className="Detail-Text">Your connection is secured with this system</p>
                 </div>
-                <div>
-                  <h2>
-                    <SupervisorAccount />
+                <div className="connect">
+                  <h2 className="Detail-Heading">
+                    <SupervisorAccount className="Detail-Icon" />
                     SME/Investor
                   </h2>
-                  <p>The right connection is waiting for you</p>
+                  <p className="Detail-Text">The right connection is waiting for you</p>
                 </div>
               </div>
             </Col>
             <Col sm>
-              <div className="Image">
-                <img src={infoImage} alt="Info" />
+              <div className="RightImage">
+                <img src={infoImage} alt="Info" className="Image-responsive" />
               </div>
             </Col>
           </Row>
@@ -68,28 +69,29 @@ const Info = () => (
       </Container>
     </div>
 
-    <div className="Info2">
+    <div className="Works">
       <Container>
         <Row>
           <Col sm>
             <div className="LeftImage"></div>
           </Col>
           <Col md="auto">
-            <div className="Info2Details">
-              <h2>How The System Works</h2>
-              <p>
-                <ArrowRightAlt style={{ fontSize: 40, color: '#47d486' }} /> Automatically suggest SMEs/Investors
-                matching Your Category
+            <div className="Work-Detail">
+              <h2 className="Work-Detail-Heading">How The System Works</h2>
+              <p className="Work-Detail-Text">
+                <ArrowRightAlt className="Work-Detail-Icon" style={{ fontSize: 40, color: '#47d486' }} /> Automatically
+                suggest SMEs/Investors matching Your Category
               </p>
-              <p>
-                <AllInclusive style={{ fontSize: 40, color: '#4789d4' }} /> Connects you to the SME/Investor
+              <p className="Work-Detail-Text">
+                <AllInclusive className="Work-Detail-Icon" style={{ fontSize: 40, color: '#4789d4' }} /> Connects you to
+                the SME/Investor
               </p>
-              <p>
-                <Message style={{ fontSize: 40, color: '#4789d4' }} /> On Successful connection, a private messaging
-                system is enabled for both parties
+              <p className="Work-Detail-Text">
+                <Message className="Work-Detail-Icon" style={{ fontSize: 40, color: '#4789d4' }} /> On Successful
+                connection, a private messaging system is enabled for both parties
               </p>
-              <p>
-                <VerifiedUser style={{ fontSize: 40, color: '#47d486' }} />
+              <p className="Work-Detail-Text">
+                <VerifiedUser className="Work-Detail-Icon" style={{ fontSize: 40, color: '#47d486' }} />
                 <span
                   style={{
                     color: '#d4475a',
@@ -98,7 +100,7 @@ const Info = () => (
                   }}
                 >
                   Note:
-                </span>{' '}
+                </span>
                 Only connect to verified SME/Investor
               </p>
             </div>
@@ -106,10 +108,10 @@ const Info = () => (
         </Row>
       </Container>
 
-      {true && (
+      {!loggedIn && (
         <div className="Ready">
-          <h2>Ready To Make That Connection?</h2>
-          <Link to="/signup" className="SignUp">
+          <h2 className="Ready-Text">Ready To Make That Connection?</h2>
+          <Link to="/signup" className="Ready-Btn">
             Get Started For Free
           </Link>
         </div>
