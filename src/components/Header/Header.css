@@ -74,7 +74,7 @@
 
 @media screen and (max-width: 768px) {
   .Header {
-    padding-bottom: 6rem !important;
+    padding-bottom: 6rem;
   }
 
   .Header .NavigationList {

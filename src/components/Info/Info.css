@@ -45,12 +45,6 @@
   padding-right: 2rem;
 }
 
-.Info .InfoDetails {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-}
-
 .Info .Details {
   display: flex;
   flex-direction: column;
@@ -309,10 +303,6 @@
 
   .Info2 {
     padding: 5rem 0;
-  }
-
-  .Info2 .Container {
-    grid-template-columns: 1fr;
   }
 
   .LeftImage {

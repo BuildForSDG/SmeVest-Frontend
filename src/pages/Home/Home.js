@@ -3,13 +3,11 @@ import './Home.css';
 import Hero from '../../components/Hero/Hero';
 import Info from '../../components/Info/Info';
 
-const Home = () => {
-  return (
-    <>
-      <Hero />
-      <Info />
-    </>
-  );
-};
+const Home = () => (
+  <>
+    <Hero />
+    <Info />
+  </>
+);
 
 export default Home;

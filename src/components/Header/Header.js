@@ -5,42 +5,41 @@ import { Dashboard, ExitToApp } from '@material-ui/icons';
 import './Header.css';
 import logo from '../../assets/images/logo.png';
 
-const Header = ({ currentUser }) => {
-  return (
-    <Navbar className="Header" expand="xl">
-      <Container>
-        <Navbar.Brand>
-          <Link to="/">
-            <img src={logo} alt="Logo" />
-          </Link>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto NavigationList">
-            {currentUser ? (
-              <>
-                <Link to="/dashboard" className="Dashboard">
-                  <Dashboard /> Dashboard
-                </Link>
-                <Link to="/signout" className="SignOut">
-                  <ExitToApp /> Sign Out
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link to="/signin" className="SignIn">
-                  Sign In
-                </Link>
-                <Link to="/signup" className="SignUp">
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
-};
+const loggedIn = true;
+const Header = () => (
+  <Navbar className="Header" expand="xl">
+    <Container>
+      <Navbar.Brand>
+        <Link to="/">
+          <img src={logo} alt="Logo" />
+        </Link>
+      </Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="ml-auto NavigationList">
+          {loggedIn ? (
+            <>
+              <Link to="/dashboard" className="Dashboard">
+                <Dashboard /> Dashboard
+              </Link>
+              <Link to="/signout" className="SignOut">
+                <ExitToApp /> Sign Out
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/signin" className="SignIn">
+                Sign In
+              </Link>
+              <Link to="/signup" className="SignUp">
+                Sign Up
+              </Link>
+            </>
+          )}
+        </Nav>
+      </Navbar.Collapse>
+    </Container>
+  </Navbar>
+);
 
 export default Header;
