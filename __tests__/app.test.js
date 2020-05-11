@@ -1,8 +1,7 @@
-/* eslint-disable import/extensions */
 import React from 'react';
 import { shallow } from 'enzyme';
-import App from '../src/App.js';
-import Header from '../src/components/Header/Header.js';
+import App from '../src/App';
+import Header from '../src/components/Header/Header';
 
 describe('<App /> Component', () => {
   test('render App component', () => {
@@ -11,5 +10,9 @@ describe('<App /> Component', () => {
 
   test('should contain Header Component', () => {
     expect(shallow(<App />).find(Header).length).toEqual(1);
+  });
+
+  test('should take a snapshot of App component', () => {
+    expect(shallow(<App />)).toMatchSnapshot();
   });
 });

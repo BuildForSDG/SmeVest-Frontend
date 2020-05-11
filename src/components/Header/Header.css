@@ -1,0 +1,92 @@
+.Header {
+  height: 95px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-family: 'Karla', sans-serif;
+  background: #fff;
+}
+
+.Header a {
+  text-decoration: none;
+}
+
+.Header a > img {
+  width: 80px;
+  height: auto;
+  max-width: 100%;
+}
+
+.Header .NavigationList {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+}
+
+.Header .NavigationList a {
+  font-size: 0.95rem;
+  padding: 0.3rem 1.5rem;
+  transition: all 300ms linear;
+}
+
+.Header .SignIn {
+  color: #928d8d;
+}
+
+.Header .SignIn:hover {
+  color: #212226;
+  text-decoration: underline;
+  text-decoration-color: #212226;
+}
+
+.Header .SignUp {
+  background: #4ad6e9;
+  border-radius: 1rem;
+  color: #fff;
+  box-shadow: 0 2px 1px #1fc2d8, 0 -1px 1px #1fc2d8;
+  border: 1px solid #4ad6e9;
+}
+
+.Header .Dashboard {
+  background: #4ad6e9;
+  border-radius: 1rem;
+  color: #fff;
+  box-shadow: 0 2px 1px #1fc2d8, 0 -1px 1px #1fc2d8;
+  border: 1px solid #4ad6e9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Header .SignUp:hover,
+.Header .Dashboard:hover {
+  background: transparent;
+  color: #212226;
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.7), 0px 0px #fff;
+  text-decoration: none;
+}
+
+.Header .SignOut {
+  border-radius: 1rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  color: #d4475a;
+}
+
+@media screen and (max-width: 768px) {
+  .Header {
+    padding-bottom: 6rem !important;
+  }
+
+  .Header .NavigationList {
+    padding: 1.6rem 0;
+  }
+
+  .Header .SignIn,
+  .Header .Dashboard {
+    margin-bottom: 0.5rem;
+  }
+
+  .Header .Dashboard {
+    justify-content: flex-start;
+  }
+}
