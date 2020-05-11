@@ -24,5 +24,17 @@ module.exports = {
       pragma: 'React',
       version: 'detect'
     }
+  },
+  rules: {
+    'import/extensions': [
+      'error',
+      'always',
+      {
+        ignorePackages: true,
+        pattern: {
+          js: 'never'
+        }
+      }
+    ]
   }
 };

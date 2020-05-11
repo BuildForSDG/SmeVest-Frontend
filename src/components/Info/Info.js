@@ -7,7 +7,7 @@ import {
   ArrowRightAlt,
   AllInclusive,
   VerifiedUser,
-  Message
+  Message,
 } from '@material-ui/icons';
 import './Info.css';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -94,7 +94,7 @@ const Info = () => (
                   style={{
                     color: '#d4475a',
                     display: 'inline-block',
-                    marginRight: 4
+                    marginRight: 4,
                   }}
                 >
                   Note:
