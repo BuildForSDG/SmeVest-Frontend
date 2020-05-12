@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-// eslint-disable-next-line import/extensions
 import App from './App.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 render(<App />, document.querySelector('#root'));

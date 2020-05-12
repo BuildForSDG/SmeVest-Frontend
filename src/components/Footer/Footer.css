@@ -1,0 +1,156 @@
+.Footer {
+  width: 100%;
+  min-height: 40vh;
+  background: #011a29;
+  color: #ddd;
+  padding: 7rem 0 1rem;
+  overflow: hidden;
+  font-family: 'Karla', sans-serif;
+}
+
+.Footer a {
+  color: #ddd;
+  text-decoration: none;
+  transition: all 300ms linear;
+}
+
+.Footer a:hover {
+  color: #1fc2d8;
+}
+
+.Footer .Logo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.Footer .Logo .logo-img {
+  margin: 0;
+  padding: 0;
+}
+
+.Footer .Address {
+  margin: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.Footer .Address-Text {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  font-size: 0.9rem;
+  margin-top: 0.4rem;
+}
+
+.Footer .Address .first {
+  margin-top: 0.8rem;
+}
+
+.Footer .Address-Icon {
+  margin-right: 1rem;
+}
+
+.Footer .Links {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.Footer .Quicklinks {
+  list-style: none;
+  align-self: center;
+  padding: 0;
+  margin: 0 2.5rem 0 0;
+}
+
+.Footer .Quicklinks li {
+  margin: 0.8rem 0;
+}
+
+.Footer .Quicklinks .Link {
+  font-size: 0.9rem;
+}
+
+.Footer .Icons {
+  display: flex;
+  align-items: center;
+}
+
+.Footer .SocialIcons {
+  display: flex;
+}
+
+.Footer .SocialIcons a {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+.Footer .SocialIcons .Icon {
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  padding: 0.4rem;
+  transition: all 300ms ease;
+  font-size: 2.3rem;
+}
+
+.Footer .SocialIcons .Icon:hover {
+  background: #1fc2d8;
+  color: #fff;
+  border-color: #1fc2d8;
+}
+
+.Footer .Copyright {
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+  .Footer .Row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .Footer .Logo {
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .Footer .Address {
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .Footer .Address-Text {
+    justify-content: start;
+    align-items: start;
+    line-height: 1.5;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .Footer .Links {
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .Footer .Quicklinks {
+    text-align: center;
+  }
+
+  .Footer .SocialIcons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .Footer .Copyright {
+    margin: 1rem 0;
+  }
+}
