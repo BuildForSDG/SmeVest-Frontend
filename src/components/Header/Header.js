@@ -28,10 +28,10 @@ const Header = () => (
             </>
           ) : (
             <>
-              <Link to="/signin" className="SignIn">
+              <Link to="/signin" className="SignInLink">
                 Sign In
               </Link>
-              <Link to="/signup" className="SignUp">
+              <Link to="/signup" className="SignUpLink">
                 Sign Up
               </Link>
             </>

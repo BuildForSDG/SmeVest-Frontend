@@ -1,0 +1,66 @@
+.SignUp {
+  margin: 3rem auto 5rem;
+  font-family: 'Karla', sans-serif;
+}
+
+.SignUp-Heading {
+  font-size: 2rem;
+  margin: 0 0 1rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+.Form {
+  min-height: 20vh;
+  border-top: 6px solid #1fc2d8;
+  box-shadow: 0 0 0.2rem rgba(0, 0, 0, 0.7);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  padding: 2rem 1rem 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.Auth-Button {
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.35rem;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid #ccc;
+  color: #212226;
+  font-family: inherit;
+  font-size: 1rem;
+  text-transform: uppercase;
+  box-sizing: border-box;
+  transition: all 400ms ease-in-out;
+  margin-top: 1rem;
+}
+
+.Auth-Button:hover {
+  background: #1fc2d8;
+  border-color: #1fc2d8;
+  color: #fff;
+}
+
+.Auth-Button:disabled {
+  cursor: not-allowed;
+  background: #d6d5d5;
+}
+
+.GeneralError {
+  color: #f8000c;
+  margin: 0.5rem 0 1rem;
+  text-shadow: 1px 1px #c7b4b4;
+}
+
+.Error {
+  color: #1f1919;
+  margin: 0.5rem 0.3rem -0.4rem;
+}
+
+@media screen and (max-width: 425px) {
+  .SignUp-Heading {
+    font-size: 1.8rem;
+  }
+}
