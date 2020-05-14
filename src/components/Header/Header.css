@@ -15,10 +15,15 @@
   max-width: 100%;
 }
 
+.navbar-collapse {
+  z-index: 3;
+}
+
 .Header .NavigationList {
   display: flex;
   justify-content: space-between;
   background: #fff;
+  z-index: 1;
 }
 
 .Header .NavigationList a {
@@ -27,17 +32,17 @@
   transition: all 300ms linear;
 }
 
-.Header .SignIn {
+.Header .SignInLink {
   color: #928d8d;
 }
 
-.Header .SignIn:hover {
+.Header .SignInLink:hover {
   color: #212226;
   text-decoration: underline;
   text-decoration-color: #212226;
 }
 
-.Header .SignUp {
+.Header .SignUpLink {
   background: #4ad6e9;
   border-radius: 1rem;
   color: #fff;
@@ -56,7 +61,7 @@
   justify-content: space-between;
 }
 
-.Header .SignUp:hover,
+.Header .SignUpLink:hover,
 .Header .Dashboard:hover {
   background: transparent;
   color: #212226;
@@ -80,7 +85,7 @@
     padding: 1.6rem 0;
   }
 
-  .Header .SignIn,
+  .Header .SignInLink,
   .Header .Dashboard {
     margin-bottom: 0.5rem;
   }
