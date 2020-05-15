@@ -6,7 +6,7 @@ module.exports = {
     jest: true
   },
   parser: 'babel-eslint',
-  extends: ['airbnb-base', 'eslint:recommended', 'plugin:react/recommended'],
+  extends: ['plugin:react/recommended', 'airbnb-base', 'eslint:recommended'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'
@@ -36,6 +36,10 @@ module.exports = {
         tsx: 'never',
         mjs: 'never'
       }
-    ]
+    ],
+    'react/prop-types': 0,
+    'import/no-named-as-default': 0,
+    'import/prefer-default-export': 0,
+    'no-nested-ternary': 0
   }
 };

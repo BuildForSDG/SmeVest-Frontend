@@ -6,6 +6,7 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Home from './pages/Home/Home';
 import SignUp from './components/SignUp/SignUp';
+import EmailVerification from './components/EmailVerification/EmailVerification';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Header />
       <Route path="/" exact component={Home} />
       <Route path="/signup" component={SignUp} />
+      <Route path="/verify" component={EmailVerification} />
       <Footer />
     </Router>
   );

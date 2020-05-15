@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Form } from 'react-bootstrap';
-import SignUp from '../src/components/SignUp/SignUp';
+import { SignUp } from '../src/components/SignUp/SignUp';
 
 const { Group } = Form;
 
