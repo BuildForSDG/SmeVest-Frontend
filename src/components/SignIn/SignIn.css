@@ -1,0 +1,17 @@
+.SignIn {
+  margin: 2rem auto 5rem;
+  font-family: 'Karla', sans-serif;
+}
+
+.SignIn-Heading {
+  font-size: 2rem;
+  margin: 0 0 1rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 425px) {
+  .SignIn-Heading {
+    font-size: 1.8rem;
+  }
+}
