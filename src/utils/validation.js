@@ -39,3 +39,6 @@ export const checkError = (field) => {
   }
   return '';
 };
+
+export const checkServerEmailError = (error) => error && error.email;
+export const checkServerNetworkError = (error) => error && error.network;

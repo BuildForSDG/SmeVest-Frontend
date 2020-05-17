@@ -1,13 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
-  Container, Row, Col, Spinner,
+  Container, Row, Col, Spinner, Alert,
 } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-import { checkValidity, isFormValidCheck, checkError } from '../../utils/validation';
+import {
+  checkValidity,
+  isFormValidCheck,
+  checkError,
+  checkServerEmailError,
+  checkServerNetworkError,
+} from '../../utils/validation';
+import { onSignUp } from '../../redux/actions';
 import './SignUp.css';
 
-class SignUp extends React.Component {
+export class SignUp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -52,16 +60,18 @@ class SignUp extends React.Component {
         touched: false,
       },
       isFormValid: false,
-      loading: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
-    this.setState({ loading: true });
+    const { email, password, role } = this.state;
+    const user = { email: email.value, password: password.value, role: role.value };
+    const res = await this.props.signUp(user);
+    if (res) this.props.history.push('/verify');
   }
 
   handleInputChange(e) {
@@ -86,6 +96,9 @@ class SignUp extends React.Component {
             <Col md={{ span: 6, offset: 3 }}>
               <h2 className="SignUp-Heading">SignUp With SmeVest</h2>
               <Form className="Form">
+                {checkServerNetworkError(this.props.error) ? (
+                  <Alert variant="danger">{this.props.error.network}</Alert>
+                ) : null}
                 <Form.Group controlId="formGroupEmail">
                   <Form.Label>Email address</Form.Label>
                   <Form.Control
@@ -94,10 +107,18 @@ class SignUp extends React.Component {
                     value={this.state.email.value}
                     onChange={this.handleInputChange}
                     placeholder="Enter email"
-                    className={`${checkError(this.state.email)}`}
+                    className={`${
+                      checkServerEmailError(this.props.error) ? 'is-invalid' : checkError(this.state.email)
+                    }`}
                   />
-                  <Form.Control.Feedback type={`${this.state.email.valid ? 'valid' : 'invalid'}`}>
-                    {`${this.state.email.valid ? 'Email looks good' : 'Invalid email address'}`}
+                  <Form.Control.Feedback type={`${this.state.email.valid && !this.props.error ? 'valid' : 'invalid'}`}>
+                    {`${
+                      checkServerEmailError(this.props.error)
+                        ? this.props.error.email
+                        : this.state.email.valid
+                          ? 'Email looks good'
+                          : 'Invalid email address'
+                    }`}
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="formGroupPassword">
@@ -170,9 +191,9 @@ class SignUp extends React.Component {
                     id="terms"
                   />
                   <Link to="/terms">Terms and conditions</Link>
-                  {this.state.loading && <Spinner animation="border" className="float-right" variant="info" />}
-                  {!this.state.loading
-                    && <button
+                  {this.props.loading && <Spinner animation="border" className="float-right" variant="info" />}
+                  {!this.props.loading && (
+                    <button
                       disabled={!this.state.isFormValid}
                       onClick={this.handleSubmit}
                       type="submit"
@@ -180,7 +201,7 @@ class SignUp extends React.Component {
                     >
                       Sign Up
                     </button>
-                  }
+                  )}
                 </Form.Group>
                 <p>
                   Already have an account? <Link to="/signin">Sign In</Link>
@@ -194,4 +215,13 @@ class SignUp extends React.Component {
   }
 }
 
-export default SignUp;
+const mapStateToProps = (state) => ({
+  loading: state.auth.loading,
+  error: state.auth.error,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  signUp: ({ email, password, role }) => dispatch(onSignUp({ email, password, role })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
