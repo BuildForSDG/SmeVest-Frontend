@@ -1,3 +1,7 @@
-import { onSignUp } from './auth';
+import {
+  onSignUp, onSignIn, verifyAccountStart, clearAuthErrors,
+} from './auth';
 
-export { onSignUp };
+export {
+  onSignUp, onSignIn, verifyAccountStart, clearAuthErrors,
+};

@@ -42,3 +42,4 @@ export const checkError = (field) => {
 
 export const checkServerEmailError = (error) => error && error.email;
 export const checkServerNetworkError = (error) => error && error.network;
+export const checkServerVerifyError = (error) => error && error.unverified;

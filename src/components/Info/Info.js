@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
   OfflineBolt,
@@ -13,8 +14,7 @@ import './Info.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import infoImage from '../../assets/images/info-image.webp';
 
-const loggedIn = false;
-const Info = () => (
+const Info = (props) => (
   <>
     <div className="Info">
       <Container>
@@ -108,7 +108,7 @@ const Info = () => (
         </Row>
       </Container>
 
-      {!loggedIn && (
+      {!props.loggedIn && (
         <div className="Ready">
           <h2 className="Ready-Text">Ready To Make That Connection?</h2>
           <Link to="/signup" className="Ready-Btn">
@@ -120,4 +120,8 @@ const Info = () => (
   </>
 );
 
-export default Info;
+const mapStateToProps = ({ auth }) => ({
+  loggedIn: auth.currentUser !== null,
+});
+
+export default connect(mapStateToProps)(Info);

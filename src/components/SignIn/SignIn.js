@@ -1,15 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
 import {
   Container, Row, Col, Spinner, Alert,
 } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
+import { onSignIn, verifyAccountStart, clearAuthErrors } from '../../redux/actions';
 import {
   checkValidity,
   isFormValidCheck,
   checkError,
   checkServerEmailError,
   checkServerNetworkError,
+  checkServerVerifyError,
 } from '../../utils/validation';
 import './SignIn.css';
 
@@ -42,13 +45,17 @@ export class SignIn extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentWillUnmount() {
+    this.props.clearStateErrors();
+  }
+
   async handleSubmit(e) {
     e.preventDefault();
     this.setState({ isFormValid: false });
-    // const { email, password } = this.state;
-    // const user = { email: email.value, password: password.value };
-    // const res = await this.props.signUp(user);
-    // if (res) this.props.history.push('/verify');
+    const { email, password } = this.state;
+    const user = { email: email.value, password: password.value };
+    const res = await this.props.signIn(user);
+    if (res) this.props.history.push('/dashboard');
   }
 
   handleInputChange(e) {
@@ -75,6 +82,10 @@ export class SignIn extends React.Component {
               <Form className="Form">
                 {checkServerNetworkError(this.props.error) ? (
                   <Alert variant="danger">{this.props.error.network}</Alert>
+                ) : checkServerVerifyError(this.props.error) ? (
+                  <Alert variant="info">
+                    {this.props.error.unverified} <Link to="/verify">Verify Account</Link>
+                  </Alert>
                 ) : null}
                 <Form.Group controlId="formGroupEmail">
                   <Form.Label>Email address</Form.Label>
@@ -139,4 +150,18 @@ export class SignIn extends React.Component {
   }
 }
 
-export default SignIn;
+const mapStateToProps = (state) => ({
+  loading: state.auth.loading,
+  error: state.auth.error,
+  isVerified: state.auth.isVerified,
+  role: state.auth.role,
+  loggedIn: state.auth.currentUser !== null,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  signIn: ({ email, password }) => dispatch(onSignIn({ email, password })),
+  verifyAccountInit: ({ code, email }) => dispatch(verifyAccountStart({ code, email })),
+  clearStateErrors: () => dispatch(clearAuthErrors()),
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignIn));

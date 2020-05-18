@@ -20,7 +20,7 @@ class EmailVerification extends React.Component {
 
   componentDidMount() {
     // Check if token is available before user can view this page
-    if (!this.props.verificationCode) this.props.history.goBack();
+    if (!this.props.verificationCode) this.props.history.push('/');
   }
 
   handleInputChange(e) {
@@ -67,7 +67,7 @@ class EmailVerification extends React.Component {
                     type="submit"
                     className="Auth-Button float-right"
                   >
-                    Submit
+                    Verify
                   </button>
                 )}
               </Form.Group>
@@ -80,12 +80,10 @@ class EmailVerification extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  token: state.auth.token,
   verificationCode: state.auth.emailConfirmCode,
   loading: state.auth.loading,
   error: state.auth.error,
   email: state.auth.email,
-  message: state.auth.message,
 });
 
 const mapDispatchToProps = (dispatch) => ({

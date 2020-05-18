@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import {
   Container, Row, Col, Spinner, Alert,
 } from 'react-bootstrap';
@@ -224,4 +224,4 @@ const mapDispatchToProps = (dispatch) => ({
   signUp: ({ email, password, role }) => dispatch(onSignUp({ email, password, role })),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignUp));
