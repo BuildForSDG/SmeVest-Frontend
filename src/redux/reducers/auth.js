@@ -55,9 +55,14 @@ const authReducer = (state = INITIAL_STATE, action) => {
     case authTypes.VERIFY_ACCOUNT_START:
       return {
         ...state,
-        loading: true,
-        emailConfirmCode: action.payload.emailConfirmCode,
         email: action.payload.email,
+        loading: true,
+      };
+    case authTypes.VERIFY_ACCOUNT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
       };
     case authTypes.AUTH_FAIL:
       return { ...state, loading: false, error: action.payload.error };

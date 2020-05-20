@@ -1,17 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import {
   Container, Row, Col, Form, Alert, Spinner,
 } from 'react-bootstrap';
 import { checkServerNetworkError } from '../../utils/validation';
 import './EmailVerification.css';
+import { verifyAccount } from '../../redux/actions/auth';
 
 class EmailVerification extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       code: '',
+      success: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -20,7 +22,7 @@ class EmailVerification extends React.Component {
 
   componentDidMount() {
     // Check if token is available before user can view this page
-    if (!this.props.verificationCode) this.props.history.push('/');
+    if (!this.props.email) this.props.history.push('/');
   }
 
   handleInputChange(e) {
@@ -28,9 +30,12 @@ class EmailVerification extends React.Component {
     this.setState({ code: e.target.value });
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
-    this.props.verifyCode(this.state.code, this.props.verificationCode);
+    const res = await this.props.verifyCode(this.state.code);
+    if (res) {
+      this.setState({ success: true });
+    }
   }
 
   render() {
@@ -39,7 +44,12 @@ class EmailVerification extends React.Component {
         <Row>
           <Col md={{ span: 6, offset: 3 }}>
             <Form className="Form">
-              {checkServerNetworkError(this.props.error) ? (
+              {this.state.success ? (
+                <Alert variant="success">
+                  <Alert.Heading>Account verified successfully.</Alert.Heading>
+                  <Link to="/signin">To Sign In</Link>
+                </Alert>
+              ) : checkServerNetworkError(this.props.error) ? (
                 <Alert variant="danger">{this.props.error.network}</Alert>
               ) : (
                 <Alert variant="info">
@@ -80,14 +90,13 @@ class EmailVerification extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  verificationCode: state.auth.emailConfirmCode,
   loading: state.auth.loading,
   error: state.auth.error,
   email: state.auth.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  verifyCode: (userCode, correctCode) => dispatch(() => correctCode === userCode),
+  verifyCode: (userCode) => dispatch(verifyAccount(userCode)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmailVerification);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EmailVerification));

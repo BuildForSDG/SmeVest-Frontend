@@ -25,3 +25,8 @@ export const signInApi = (user) => requests(`${API_END_POINT}/auth/signin`, {
   body: JSON.stringify(user),
   method: 'POST',
 });
+
+export const verifyAccountApi = (emailVerifyCode) => requests(`${API_END_POINT}/auth/emails/confirm`, {
+  body: JSON.stringify(emailVerifyCode),
+  method: 'POST',
+});
