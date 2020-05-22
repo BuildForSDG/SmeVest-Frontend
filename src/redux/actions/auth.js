@@ -1,5 +1,5 @@
 import { authTypes } from '../types';
-import { signUpApi, signInApi } from '../../utils/api';
+import { signUpApi, signInApi, verifyAccountApi } from '../../utils/api';
 
 export const authStart = () => ({
   type: authTypes.AUTH_START,
@@ -35,10 +35,9 @@ export const clearAuthErrors = () => ({
   type: authTypes.CLEAR_ERRORS,
 });
 
-export const verifyAccountStart = ({ emailConfirmCode, email }) => ({
+export const verifyAccountStart = ({ email }) => ({
   type: authTypes.VERIFY_ACCOUNT_START,
   payload: {
-    emailConfirmCode,
     email,
   },
 });
@@ -48,12 +47,13 @@ export const onSignIn = ({ email, password }) => async (dispatch) => {
   const user = { email, password };
   try {
     const userData = await signInApi(user);
+
     if (userData.status === 200) {
       // Sign In Successful
       // Check if user is verified
       const {
         data: {
-          _id, emailConfirmCode, isVerified, role, token,
+          _id, isVerified, role, token,
         },
       } = userData;
 
@@ -65,16 +65,21 @@ export const onSignIn = ({ email, password }) => async (dispatch) => {
         dispatch(onSignInSuccess({ _id, token, role }));
         return true;
       }
+    }
+
+    if (userData.status === 403) {
       // Unverified account
-      dispatch(verifyAccountStart({ emailConfirmCode, email }));
+      dispatch(verifyAccountStart({ email }));
       dispatch(authFail({ unverified: 'This account has not been verified' }));
       return false;
     }
+
     if (userData.status === 401) {
       // Check if user's password is incorrect
       dispatch(authFail({ network: 'Incorrect Credentials' }));
       return false;
     }
+
     // user account is not available
     dispatch(authFail({ network: 'Account does not exist. Click the Sign Up button below to create one.' }));
     return false;
@@ -129,5 +134,20 @@ export const authCheckState = () => (dispatch) => {
     dispatch(signOut());
   } else {
     dispatch(onSignInSuccess({ _id: id, token, role }));
+  }
+};
+
+export const verifyAccount = (emailCode) => async (dispatch) => {
+  try {
+    const userData = await verifyAccountApi({ token: emailCode });
+    if (userData.status === 200) {
+      dispatch({ type: authTypes.VERIFY_ACCOUNT_SUCCESS });
+      return true;
+    }
+    dispatch(authFail({ network: 'Verification code is incorrect or has expired' }));
+    return false;
+  } catch (error) {
+    dispatch(authFail({ network: 'Network Error' }));
+    return false;
   }
 };
