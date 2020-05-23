@@ -30,3 +30,8 @@ export const verifyAccountApi = (emailVerifyCode) => requests(`${API_END_POINT}/
   body: JSON.stringify(emailVerifyCode),
   method: 'POST',
 });
+
+export const resentVerifyCodeApi = (email) => requests(`${API_END_POINT}/auth/emails/confirm/resend`, {
+  body: JSON.stringify(email),
+  method: 'POST',
+});

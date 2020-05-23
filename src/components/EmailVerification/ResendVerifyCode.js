@@ -6,13 +6,13 @@ import {
 } from 'react-bootstrap';
 import { checkServerNetworkError } from '../../utils/validation';
 import './EmailVerification.css';
-import { verifyAccount, clearAuthErrors } from '../../redux/actions/auth';
+import { resendVerifyCode, clearAuthErrors } from '../../redux/actions';
 
-class EmailVerification extends React.Component {
+class ResendVerifyCode extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      code: '',
+      email: '',
       success: false,
     };
 
@@ -24,21 +24,16 @@ class EmailVerification extends React.Component {
     this.props.clearStateErrors();
   }
 
-  componentDidMount() {
-    // Check if token is available before user can view this page
-    if (!this.props.email) this.props.history.push('/');
-  }
-
   handleInputChange(e) {
     e.preventDefault();
-    this.setState({ code: e.target.value });
+    this.setState({ email: e.target.value });
   }
 
   async handleSubmit(e) {
     e.preventDefault();
-    const res = await this.props.verifyCode(this.state.code);
+    const res = await this.props.resendCode(this.state.email);
     if (res) {
-      this.setState({ success: true });
+      this.setState({ success: true, email: '' });
     }
   }
 
@@ -50,40 +45,36 @@ class EmailVerification extends React.Component {
             <Form className="Form">
               {this.state.success ? (
                 <Alert variant="success">
-                  <Alert.Heading>Account verified successfully.</Alert.Heading>
-                  <Link to="/signin">To Sign In</Link>
+                  <Alert.Heading>Verification code sent successfully.</Alert.Heading>
+                  <Link to="/verify">Verify Account</Link>
                 </Alert>
               ) : checkServerNetworkError(this.props.error) ? (
-                <Alert variant="danger">
-                  {this.props.error.network} <Link to="/resend-verify-code">Resend Code</Link>
-                </Alert>
+                <Alert variant="danger">{this.props.error.network}</Alert>
               ) : (
                 <Alert variant="info">
-                  <Alert.Heading>{this.props.message && 'Account created successfully.'}</Alert.Heading>A code has been
-                  sent to {this.props.email}. Enter the code to verify your account. Didn&apos;t get a code ?{' '}
-                  <Link to="/resend-verify-code">Resend Code</Link>
+                  Enter your email address. <Link to="/">Cancel</Link>
                 </Alert>
               )}
               <Form.Group controlId="formGroupEmail">
-                <Form.Label>Email verification code</Form.Label>
+                <Form.Label>Email Address</Form.Label>
                 <Form.Control
                   type="email"
                   name="email"
-                  value={this.state.code}
+                  value={this.state.email}
                   onChange={this.handleInputChange}
-                  placeholder="Enter verification code"
+                  placeholder="Enter email address"
                 />
               </Form.Group>
               <Form.Group>
                 {this.props.loading && <Spinner animation="border" className="float-right" variant="info" />}
                 {!this.props.loading && (
                   <button
-                    disabled={!this.state.code}
+                    disabled={!this.state.email}
                     onClick={this.handleSubmit}
                     type="submit"
                     className="Auth-Button float-right"
                   >
-                    Verify
+                    Resend Code
                   </button>
                 )}
               </Form.Group>
@@ -98,12 +89,11 @@ class EmailVerification extends React.Component {
 const mapStateToProps = (state) => ({
   loading: state.auth.loading,
   error: state.auth.error,
-  email: state.auth.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  verifyCode: (userCode) => dispatch(verifyAccount(userCode)),
+  resendCode: (email) => dispatch(resendVerifyCode(email)),
   clearStateErrors: () => dispatch(clearAuthErrors()),
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EmailVerification));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ResendVerifyCode));

@@ -1,5 +1,7 @@
 import { authTypes } from '../types';
-import { signUpApi, signInApi, verifyAccountApi } from '../../utils/api';
+import {
+  signUpApi, signInApi, verifyAccountApi, resentVerifyCodeApi,
+} from '../../utils/api';
 
 export const authStart = () => ({
   type: authTypes.AUTH_START,
@@ -145,6 +147,23 @@ export const verifyAccount = (emailCode) => async (dispatch) => {
       return true;
     }
     dispatch(authFail({ network: 'Verification code is incorrect or has expired' }));
+    return false;
+  } catch (error) {
+    dispatch(authFail({ network: 'Network Error' }));
+    return false;
+  }
+};
+
+export const resendVerifyCode = (email) => async (dispatch) => {
+  dispatch(authStart());
+  try {
+    const res = await resentVerifyCodeApi({ email });
+    if (res.status === 200) {
+      dispatch(verifyAccountStart({ email }));
+      dispatch({ type: authTypes.VERIFY_ACCOUNT_SUCCESS });
+      return true;
+    }
+    dispatch(authFail({ network: 'Network Error' }));
     return false;
   } catch (error) {
     dispatch(authFail({ network: 'Network Error' }));

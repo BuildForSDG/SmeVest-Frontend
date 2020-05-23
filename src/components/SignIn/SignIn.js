@@ -5,7 +5,7 @@ import {
   Container, Row, Col, Spinner, Alert,
 } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-import { onSignIn, verifyAccountStart, clearAuthErrors } from '../../redux/actions';
+import { onSignIn, clearAuthErrors } from '../../redux/actions';
 import {
   checkValidity,
   isFormValidCheck,
@@ -160,7 +160,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   signIn: ({ email, password }) => dispatch(onSignIn({ email, password })),
-  verifyAccountInit: ({ code, email }) => dispatch(verifyAccountStart({ code, email })),
   clearStateErrors: () => dispatch(clearAuthErrors()),
 });
 
