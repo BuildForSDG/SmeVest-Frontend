@@ -14,6 +14,7 @@ import EmailVerification from './components/EmailVerification/EmailVerification'
 import NotFound from './components/NotFound/NotFound';
 import Dashboard from './pages/Dashboard/Dashboard';
 import { authCheckState } from './redux/actions/auth';
+import ResendVerifyCode from './components/EmailVerification/ResendVerifyCode';
 
 export class App extends React.Component {
   componentDidMount() {
@@ -29,6 +30,10 @@ export class App extends React.Component {
           <Route path="/signin" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <SignIn />)} />
           <Route path="/signup" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <SignUp />)} />
           <Route path="/verify" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <EmailVerification />)} />
+          <Route
+            path="/resend-verify-code"
+            render={() => (this.props.loggedIn ? <Redirect to="/" /> : <ResendVerifyCode />)}
+          />
           <Route path="/dashboard" component={Dashboard} />
           <Route component={NotFound} />
         </Switch>
