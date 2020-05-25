@@ -13,7 +13,7 @@ describe('auth reducer - sign up', () => {
       emailConfirmCode: '',
       error: null,
       loading: false,
-      message: '',
+      currentUser: null,
     };
   });
   test('should return initial state', () => {
@@ -27,9 +27,7 @@ describe('auth reducer - sign up', () => {
         payload: {
           token: 'some-token',
           userId: 'some-user-id',
-          isVerified: false,
           emailConfirmCode: 'verification-code',
-          message: 'user created',
           email: 'test@test.com',
         },
       }),
@@ -37,10 +35,30 @@ describe('auth reducer - sign up', () => {
       ...state,
       token: 'some-token',
       userId: 'some-user-id',
-      isVerified: false,
       emailConfirmCode: 'verification-code',
-      message: 'user created',
       email: 'test@test.com',
+    });
+  });
+
+  test('should store currently signed in user (verified)', () => {
+    expect(
+      authReducer(state, {
+        type: authTypes.SIGN_IN_SUCCESS,
+        payload: {
+          userId: 'some-id',
+          token: 'some-token',
+          role: 'role',
+        },
+      }),
+    ).toEqual({
+      ...state,
+      currentUser: {
+        id: 'some-id',
+        token: 'some-token',
+        role: 'role',
+      },
+      error: null,
+      loading: false,
     });
   });
 
@@ -63,8 +81,6 @@ describe('auth actions - signup', () => {
       token: 'some-token',
       _id: 'xcx34ccx',
       emailConfirmCode: 'code',
-      isVerified: false,
-      message: 'some-message',
       email: 'user@user.com',
     };
     const expectOutput = {
@@ -73,8 +89,6 @@ describe('auth actions - signup', () => {
         token: 'some-token',
         userId: 'xcx34ccx',
         emailConfirmCode: 'code',
-        isVerified: false,
-        message: 'some-message',
         email: 'user@user.com',
       },
     };
