@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter as Router, Route, Switch, Redirect,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 // Components
 import { connect } from 'react-redux';
@@ -13,8 +11,11 @@ import SignIn from './components/SignIn/SignIn';
 import EmailVerification from './components/EmailVerification/EmailVerification';
 import NotFound from './components/NotFound/NotFound';
 import Dashboard from './pages/Dashboard/Dashboard';
-import { authCheckState } from './redux/actions/auth';
 import ResendVerifyCode from './components/EmailVerification/ResendVerifyCode';
+import RequestLink from './components/PasswordReset/RequestLink';
+import PasswordReset from './components/PasswordReset/PasswordReset';
+
+import { authCheckState } from './redux/actions/auth';
 
 export class App extends React.Component {
   componentDidMount() {
@@ -34,6 +35,8 @@ export class App extends React.Component {
             path="/resend-verify-code"
             render={() => (this.props.loggedIn ? <Redirect to="/" /> : <ResendVerifyCode />)}
           />
+          <Route path="/forgot-password" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <RequestLink />)} />
+          <Route path="/reset" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <PasswordReset />)} />
           <Route path="/dashboard" component={Dashboard} />
           <Route component={NotFound} />
         </Switch>
@@ -44,11 +47,11 @@ export class App extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  loggedIn: state.auth.currentUser !== null,
+  loggedIn: state.auth.currentUser !== null
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  attemptSignIn: () => dispatch(authCheckState()),
+  attemptSignIn: () => dispatch(authCheckState())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { Container, Row, Col, Form, Alert, Spinner } from 'react-bootstrap';
 import { checkServerNetworkError } from '../../utils/validation';
-import './EmailVerification.css';
-import { resendVerifyCode, clearAuthErrors } from '../../redux/actions';
+import { clearAuthErrors } from '../../redux/actions';
+import './PasswordReset.css';
 
-class ResendVerifyCode extends React.Component {
+export class RequestLink extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,28 +29,29 @@ class ResendVerifyCode extends React.Component {
 
   async handleSubmit(e) {
     e.preventDefault();
-    const res = await this.props.resendCode(this.state.email);
-    if (res) {
-      this.setState({ success: true, email: '' });
-    }
+    // const res = await this.props.resendCode(this.state.email);
+    // if (res) {
+    //   this.setState({ success: true, email: '' });
+    // }
   }
 
   render() {
     return (
-      <Container className="EmailVerification">
+      <Container className="PasswordReset">
         <Row>
           <Col md={{ span: 6, offset: 3 }}>
             <Form className="Form">
               {this.state.success ? (
                 <Alert variant="success">
-                  <Alert.Heading>Verification code sent successfully.</Alert.Heading>
-                  <Link to="/verify">Verify Account</Link>
+                  <Alert.Heading>A link has been sent successfully.</Alert.Heading>
                 </Alert>
               ) : checkServerNetworkError(this.props.error) ? (
                 <Alert variant="danger">{this.props.error.network}</Alert>
               ) : (
                 <Alert variant="info">
-                  Enter your email address. <Link to="/">Cancel</Link>
+                  <Alert.Heading> Forgot your password?</Alert.Heading>
+                  Please enter your email address below. We'll send you an email with a link to reset your password.{' '}
+                  <Link to="/">Cancel</Link>
                 </Alert>
               )}
               <Form.Group controlId="formGroupEmail">
@@ -72,7 +73,7 @@ class ResendVerifyCode extends React.Component {
                     type="submit"
                     className="Auth-Button float-right"
                   >
-                    Resend Code
+                    Send
                   </button>
                 )}
               </Form.Group>
@@ -90,8 +91,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  resendCode: (email) => dispatch(resendVerifyCode(email)),
   clearStateErrors: () => dispatch(clearAuthErrors())
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ResendVerifyCode));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RequestLink));
