@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { Container, Row, Col, Form, Alert, Spinner } from 'react-bootstrap';
+import {
+  Container, Row, Col, Form, Alert, Spinner,
+} from 'react-bootstrap';
 import { checkServerNetworkError } from '../../utils/validation';
-import { clearAuthErrors } from '../../redux/actions';
+import { clearAuthErrors, requestResetLink } from '../../redux/actions';
 import './PasswordReset.css';
 
 export class RequestLink extends React.Component {
@@ -11,7 +13,7 @@ export class RequestLink extends React.Component {
     super(props);
     this.state = {
       email: '',
-      success: false
+      success: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -29,10 +31,10 @@ export class RequestLink extends React.Component {
 
   async handleSubmit(e) {
     e.preventDefault();
-    // const res = await this.props.resendCode(this.state.email);
-    // if (res) {
-    //   this.setState({ success: true, email: '' });
-    // }
+    const res = await this.props.requestLink(this.state.email);
+    if (res) {
+      this.setState({ success: true, email: '' });
+    }
   }
 
   render() {
@@ -43,15 +45,18 @@ export class RequestLink extends React.Component {
             <Form className="Form">
               {this.state.success ? (
                 <Alert variant="success">
-                  <Alert.Heading>A link has been sent successfully.</Alert.Heading>
+                  <Alert.Heading>
+                    A link has been sent to your email address.{'\n'}
+                    Follow the link to reset your password.
+                  </Alert.Heading>
                 </Alert>
               ) : checkServerNetworkError(this.props.error) ? (
                 <Alert variant="danger">{this.props.error.network}</Alert>
               ) : (
                 <Alert variant="info">
                   <Alert.Heading> Forgot your password?</Alert.Heading>
-                  Please enter your email address below. We'll send you an email with a link to reset your password.{' '}
-                  <Link to="/">Cancel</Link>
+                  Please enter your email address below. We&apos;ll{'\n'}
+                  send you an email with a link to reset your password. <Link to="/">Cancel</Link>
                 </Alert>
               )}
               <Form.Group controlId="formGroupEmail">
@@ -87,11 +92,12 @@ export class RequestLink extends React.Component {
 
 const mapStateToProps = (state) => ({
   loading: state.auth.loading,
-  error: state.auth.error
+  error: state.auth.error,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  clearStateErrors: () => dispatch(clearAuthErrors())
+  clearStateErrors: () => dispatch(clearAuthErrors()),
+  requestLink: (email) => dispatch(requestResetLink(email)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RequestLink));

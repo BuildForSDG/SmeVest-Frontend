@@ -1,5 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter as Router, Route, Switch, Redirect,
+} from 'react-router-dom';
 
 // Components
 import { connect } from 'react-redux';
@@ -36,7 +38,7 @@ export class App extends React.Component {
             render={() => (this.props.loggedIn ? <Redirect to="/" /> : <ResendVerifyCode />)}
           />
           <Route path="/forgot-password" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <RequestLink />)} />
-          <Route path="/reset" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <PasswordReset />)} />
+          <Route path="/reset/:token" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <PasswordReset />)} />
           <Route path="/dashboard" component={Dashboard} />
           <Route component={NotFound} />
         </Switch>
@@ -47,11 +49,11 @@ export class App extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  loggedIn: state.auth.currentUser !== null
+  loggedIn: state.auth.currentUser !== null,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  attemptSignIn: () => dispatch(authCheckState())
+  attemptSignIn: () => dispatch(authCheckState()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,9 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { Container, Row, Col, Form, Alert, Spinner } from 'react-bootstrap';
-import { checkServerNetworkError, checkError, checkValidity, isFormValidCheck } from '../../utils/validation';
-import { clearAuthErrors } from '../../redux/actions';
+import {
+  Container, Row, Col, Form, Alert, Spinner,
+} from 'react-bootstrap';
+import {
+  checkServerNetworkError,
+  checkServerEmailError,
+  checkError,
+  checkValidity,
+  isFormValidCheck,
+} from '../../utils/validation';
+import { clearAuthErrors, resetPassword } from '../../redux/actions';
 
 import './PasswordReset.css';
 
@@ -11,29 +19,49 @@ export class PasswordReset extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      email: {
+        value: '',
+        valid: false,
+        validation: {
+          required: true,
+          email: true,
+        },
+        touched: false,
+      },
       password: {
         value: '',
         valid: false,
         validation: {
           required: true,
-          minLength: 6
+          minLength: 6,
         },
-        touched: false
+        touched: false,
       },
       confirm: {
         value: '',
         valid: false,
         validation: {
           required: true,
-          match: 'password'
+          match: 'password',
         },
-        touched: false
+        touched: false,
       },
-      isFormValid: false
+      token: '',
+      isFormValid: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    // Get token from url
+    const { token } = this.props.match.params;
+    if (!token.trim()) {
+      this.props.history.push('/');
+    } else {
+      this.setState((prevState) => ({ ...prevState, token }));
+    }
   }
 
   componentWillUnmount() {
@@ -56,10 +84,17 @@ export class PasswordReset extends React.Component {
 
   async handleSubmit(e) {
     e.preventDefault();
-    // const res = await this.props.resendCode(this.state.email);
-    // if (res) {
-    //   this.setState({ success: true, email: '' });
-    // }
+    const { email, password, token } = this.state;
+    const user = { email: email.value, password: password.value, token };
+    const res = await this.props.reset(user);
+    if (res) {
+      this.setState({
+        success: true,
+        email: '',
+        password: '',
+        confirm: '',
+      });
+    }
   }
 
   render() {
@@ -70,14 +105,34 @@ export class PasswordReset extends React.Component {
             <Form className="Form">
               {this.state.success ? (
                 <Alert variant="success">
-                  <Alert.Heading>Verification code sent successfully.</Alert.Heading>
+                  <Alert.Heading>Password reset is successful. Proceed to sign in.</Alert.Heading>
                   <Link to="/signin">Sign In</Link>
                 </Alert>
               ) : checkServerNetworkError(this.props.error) ? (
                 <Alert variant="danger">{this.props.error.network}</Alert>
               ) : (
-                <Alert variant="info">Enter new password</Alert>
+                <Alert variant="info">Enter your email and new password</Alert>
               )}
+              <Form.Group controlId="formGroupEmail">
+                <Form.Label>Email address</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="email"
+                  value={this.state.email.value}
+                  onChange={this.handleInputChange}
+                  placeholder="Enter email"
+                  className={`${checkServerEmailError(this.props.error) ? 'is-invalid' : checkError(this.state.email)}`}
+                />
+                <Form.Control.Feedback type={`${this.state.email.valid && !this.props.error ? 'valid' : 'invalid'}`}>
+                  {`${
+                    checkServerEmailError(this.props.error)
+                      ? this.props.error.email
+                      : this.state.email.valid
+                        ? 'Email looks good'
+                        : 'Invalid email address'
+                  }`}
+                </Form.Control.Feedback>
+              </Form.Group>
               <Form.Group controlId="formGroupPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
@@ -129,11 +184,12 @@ export class PasswordReset extends React.Component {
 
 const mapStateToProps = (state) => ({
   loading: state.auth.loading,
-  error: state.auth.error
+  error: state.auth.error,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  clearStateErrors: () => dispatch(clearAuthErrors())
+  clearStateErrors: () => dispatch(clearAuthErrors()),
+  reset: ({ email, password, token }) => dispatch(resetPassword({ email, password, token })),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PasswordReset));

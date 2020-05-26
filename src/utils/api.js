@@ -31,7 +31,17 @@ export const verifyAccountApi = (emailVerifyCode) => requests(`${API_END_POINT}/
   method: 'POST',
 });
 
-export const resentVerifyCodeApi = (email) => requests(`${API_END_POINT}/auth/emails/confirm/resend`, {
+export const resendVerifyCodeApi = (email) => requests(`${API_END_POINT}/auth/emails/confirm/resend`, {
   body: JSON.stringify(email),
+  method: 'POST',
+});
+
+export const requestPasswordResetLinkApi = (email) => requests(`${API_END_POINT}/auth/passwords/forgot`, {
+  body: JSON.stringify(email),
+  method: 'POST',
+});
+
+export const resetPasswordApi = ({ password, email, token }) => requests(`${API_END_POINT}/auth/passwords/reset`, {
+  body: JSON.stringify({ password, email, token }),
   method: 'POST',
 });

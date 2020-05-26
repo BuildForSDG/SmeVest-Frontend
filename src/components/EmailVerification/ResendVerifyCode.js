@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { Container, Row, Col, Form, Alert, Spinner } from 'react-bootstrap';
+import {
+  Container, Row, Col, Form, Alert, Spinner,
+} from 'react-bootstrap';
 import { checkServerNetworkError } from '../../utils/validation';
 import './EmailVerification.css';
 import { resendVerifyCode, clearAuthErrors } from '../../redux/actions';
@@ -11,7 +13,7 @@ class ResendVerifyCode extends React.Component {
     super(props);
     this.state = {
       email: '',
-      success: false
+      success: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -86,12 +88,12 @@ class ResendVerifyCode extends React.Component {
 
 const mapStateToProps = (state) => ({
   loading: state.auth.loading,
-  error: state.auth.error
+  error: state.auth.error,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   resendCode: (email) => dispatch(resendVerifyCode(email)),
-  clearStateErrors: () => dispatch(clearAuthErrors())
+  clearStateErrors: () => dispatch(clearAuthErrors()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ResendVerifyCode));

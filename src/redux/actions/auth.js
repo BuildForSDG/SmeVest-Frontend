@@ -1,11 +1,18 @@
 import { authTypes } from '../types';
 import {
-  signUpApi, signInApi, verifyAccountApi, resentVerifyCodeApi,
+  signUpApi,
+  signInApi,
+  verifyAccountApi,
+  resendVerifyCodeApi,
+  requestPasswordResetLinkApi,
+  resetPasswordApi,
 } from '../../utils/api';
 
 export const authStart = () => ({
   type: authTypes.AUTH_START,
 });
+
+export const signOutStart = () => ({ type: authTypes.SIGN_OUT_USER });
 
 export const onSignUpSuccess = ({
   token, _id, emailConfirmCode, email,
@@ -119,8 +126,6 @@ export const onSignUp = ({ email, password, role }) => async (dispatch) => {
   }
 };
 
-export const signOutStart = () => ({ type: authTypes.SIGN_OUT_USER });
-
 export const signOut = () => (dispatch) => {
   localStorage.removeItem('AUTH_TOKEN');
   localStorage.removeItem('userId');
@@ -157,13 +162,47 @@ export const verifyAccount = (emailCode) => async (dispatch) => {
 export const resendVerifyCode = (email) => async (dispatch) => {
   dispatch(authStart());
   try {
-    const res = await resentVerifyCodeApi({ email });
+    const res = await resendVerifyCodeApi({ email });
     if (res.status === 200) {
       dispatch(verifyAccountStart({ email }));
       dispatch({ type: authTypes.VERIFY_ACCOUNT_SUCCESS });
       return true;
     }
     dispatch(authFail({ network: 'Network Error' }));
+    return false;
+  } catch (error) {
+    dispatch(authFail({ network: 'Network Error' }));
+    return false;
+  }
+};
+
+export const requestResetLink = (email) => async (dispatch) => {
+  dispatch(authStart());
+  try {
+    const res = await requestPasswordResetLinkApi({ email });
+    if (res.status === 200) {
+      dispatch(verifyAccountStart({ email }));
+      dispatch({ type: authTypes.VERIFY_ACCOUNT_SUCCESS });
+      return true;
+    }
+    dispatch(authFail({ network: 'Password reset link already sent. Please, check your mail.' }));
+    return false;
+  } catch (error) {
+    dispatch(authFail({ network: 'Network Error' }));
+    return false;
+  }
+};
+
+export const resetPassword = ({ email, password, token }) => async (dispatch) => {
+  dispatch(authStart());
+  try {
+    const res = await resetPasswordApi({ email, password, token });
+    if (res.status === 200) {
+      dispatch(verifyAccountStart({ email }));
+      dispatch({ type: authTypes.VERIFY_ACCOUNT_SUCCESS });
+      return true;
+    }
+    dispatch(authFail({ network: res.data.errors.email }));
     return false;
   } catch (error) {
     dispatch(authFail({ network: 'Network Error' }));

@@ -5,7 +5,12 @@ import { PasswordReset } from '../src/components/PasswordReset/PasswordReset';
 describe('PasswordReset Component', () => {
   let wrapper;
   beforeEach(() => {
-    wrapper = shallow(<PasswordReset />);
+    const match = {
+      params: {
+        token: 'sdkgsdjgndjfgnfdjgfdi'
+      }
+    };
+    wrapper = shallow(<PasswordReset match={match} />);
   });
 
   test('should match snapshot', () => {
