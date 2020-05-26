@@ -13,8 +13,11 @@ import SignIn from './components/SignIn/SignIn';
 import EmailVerification from './components/EmailVerification/EmailVerification';
 import NotFound from './components/NotFound/NotFound';
 import Dashboard from './pages/Dashboard/Dashboard';
-import { authCheckState } from './redux/actions/auth';
 import ResendVerifyCode from './components/EmailVerification/ResendVerifyCode';
+import RequestLink from './components/PasswordReset/RequestLink';
+import PasswordReset from './components/PasswordReset/PasswordReset';
+
+import { authCheckState } from './redux/actions/auth';
 
 export class App extends React.Component {
   componentDidMount() {
@@ -34,6 +37,8 @@ export class App extends React.Component {
             path="/resend-verify-code"
             render={() => (this.props.loggedIn ? <Redirect to="/" /> : <ResendVerifyCode />)}
           />
+          <Route path="/forgot-password" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <RequestLink />)} />
+          <Route path="/reset/:token" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <PasswordReset />)} />
           <Route path="/dashboard" component={Dashboard} />
           <Route component={NotFound} />
         </Switch>
