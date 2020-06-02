@@ -50,6 +50,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currentUser: null,
         error: null,
+        loading: false,
       };
     }
     case authTypes.VERIFY_ACCOUNT_START:

@@ -9,6 +9,8 @@ import {
   resetPassword,
 } from './auth';
 
+import { createUserProfile, getProfile } from './user';
+
 export {
   onSignUp,
   onSignIn,
@@ -18,4 +20,6 @@ export {
   resendVerifyCode,
   requestResetLink,
   resetPassword,
+  createUserProfile,
+  getProfile,
 };

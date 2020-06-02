@@ -17,6 +17,17 @@ export const checkValidity = (value, rules, state) => {
     isValid = value.trim() === state[rules.match].value && isValid;
   }
 
+  if (rules.url) {
+    isValid = value
+      .trim()
+      .match(/[(http(s)?):\/\/(www.)?a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/)
+      && isValid;
+  }
+
+  if (rules.image) {
+    isValid = ['image/jpg', 'image/png', 'image/jpeg', 'image/svg'].includes(value.toLowerCase()) && isValid;
+  }
+
   return isValid;
 };
 
