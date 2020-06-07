@@ -123,6 +123,23 @@ export const createProfileApi = async (formData) => {
   }
 };
 
+export const updateProfileApi = async (formData) => {
+  try {
+    const req = await fetch(`${API_END_POINT}/profile/update`, {
+      headers: {
+        ACCESS_TOKEN: localStorage.getItem(ACCESS_TOKEN),
+      },
+      method: 'PATCH',
+      body: formData,
+    });
+
+    const res = await req.json();
+    return res;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const getProfileApi = () => requests(`${API_END_POINT}/profile/get`, {
   method: 'GET',
 });

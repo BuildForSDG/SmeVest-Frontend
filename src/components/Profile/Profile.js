@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Container, Row, Col, Card, Image, Alert } from 'react-bootstrap';
+import {
+  Container, Row, Col, Card, Image, Alert,
+} from 'react-bootstrap';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 import {
@@ -20,7 +22,7 @@ import {
   Image as PictureAsImage,
   Twitter,
   LinkedIn,
-  MergeType
+  MergeType,
 } from '@material-ui/icons';
 import { connect } from 'react-redux';
 import { checkServerNetworkError } from '../../utils/validation';
@@ -34,7 +36,8 @@ class Profile extends React.Component {
     this.state = {
       user: {},
       isLoading: false,
-      isError: false
+      isError: false,
+      updated: false,
     };
 
     this._isMounted = false;
@@ -45,13 +48,12 @@ class Profile extends React.Component {
   async fetchUserProfile() {
     const res = await this.props.userProfile();
     if (res && this._isMounted) {
-      this.setState({ user: this.props.userData });
+      this.setState({ user: this.props.userData, updated: true });
     }
   }
 
   componentDidMount() {
     this._isMounted = true;
-
     this.fetchUserProfile();
   }
 
@@ -94,28 +96,30 @@ class Profile extends React.Component {
                 <>
                   <div className="Heading">
                     <h4>{user.name || 'NA'}</h4>
-                    <Link to={`${this.props.match.url}/edit`} className="btn btn-sm btn-outline-primary">
-                      <Edit /> Edit Profile
-                    </Link>
+                    {this.state.updated ? (
+                      <Link to={`${this.props.match.url}/edit`} className="btn btn-sm btn-outline-primary">
+                        <Edit /> Edit Profile
+                      </Link>
+                    ) : (
+                      <Link to={`${this.props.match.url}/create`} className="btn btn-sm btn-outline-success">
+                        <Edit /> Create Profile
+                      </Link>
+                    )}
                   </div>
                   <div className="Body">
-                    <p>
-                      <Category /> {user.category || 'NA'}
+                    <p style={{ textTransform: 'capitalize' }}>
+                      <Category /> {(Array.isArray(user.category) ? user.category.map((cat) => `${cat.toUpperCase()} `) : user.category) || 'NA'}
                     </p>
                     <p>
                       <Room /> {user.city} | {user.country || 'NA'}
                     </p>
-                    {user && user.teamSize ? (
+                    {user && user.teamSize && (
                       <p>
                         <People /> {`${user.teamSize} People` || 'NA'}
                       </p>
-                    ) : (
-                      <p>
-                        <People /> NA
-                      </p>
-                    )}
+                    ) }
                     {user && user.type && (
-                      <p>
+                      <p style={{ textTransform: 'capitalize' }}>
                         <MergeType /> {user.type}
                       </p>
                     )}
@@ -136,7 +140,7 @@ class Profile extends React.Component {
                 <Skeleton width={'100%'} height={'100%'} />
               ) : (
                 <div className="Body">
-                  <p>{user.about}</p>
+                  <p>{user.about || 'NA'}</p>
                 </div>
               )}
             </Col>
@@ -213,12 +217,12 @@ class Profile extends React.Component {
 const mapStateToProps = ({ user }) => ({
   userData: user.userData,
   loading: user.loading,
-  error: user.error
+  error: user.error,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   userProfile: () => dispatch(getProfile()),
-  clearErrors: () => dispatch(clearAuthErrors())
+  clearErrors: () => dispatch(clearAuthErrors()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Profile));

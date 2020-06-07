@@ -6,13 +6,14 @@ import {
 } from 'react-bootstrap';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { getCountries, getStates, getCities } from '../../utils/api';
-import { updateUserProfile, getProfile } from '../../redux/actions';
+import { createUserProfile } from '../../redux/actions';
 import {
   checkValidity, isFormValidCheck, checkError, checkServerNetworkError,
 } from '../../utils/validation';
 import './Profile.css';
+import { authCheckState } from '../../redux/actions/auth';
 
-class EditProfile extends React.Component {
+class CreateProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,7 +22,7 @@ class EditProfile extends React.Component {
       cities: [],
       categories: {
         value: [],
-        valid: props.role === 'sme' || true,
+        valid: props.role === 'sme',
         validation: {
           required: true,
         },
@@ -42,7 +43,7 @@ class EditProfile extends React.Component {
       },
       name: {
         value: '',
-        valid: true,
+        valid: false,
         validation: {
           required: true,
         },
@@ -50,7 +51,7 @@ class EditProfile extends React.Component {
       },
       type: {
         value: '',
-        valid: props.role === 'sme' || true,
+        valid: props.role === 'sme',
         validation: {
           required: true,
         },
@@ -67,7 +68,7 @@ class EditProfile extends React.Component {
       },
       about: {
         value: '',
-        valid: true,
+        valid: false,
         validation: {
           required: true,
           minLength: 6,
@@ -76,7 +77,7 @@ class EditProfile extends React.Component {
       },
       category: {
         value: '',
-        valid: props.role === 'investor' || true,
+        valid: props.role === 'investor',
         validation: {
           required: true,
         },
@@ -84,7 +85,7 @@ class EditProfile extends React.Component {
       },
       teamSize: {
         value: '',
-        valid: this.props.role === 'investor' || true,
+        valid: this.props.role === 'investor',
         validation: {
           required: true,
         },
@@ -100,7 +101,7 @@ class EditProfile extends React.Component {
       },
       city: {
         value: '',
-        valid: true,
+        valid: false,
         validation: {
           required: true,
         },
@@ -117,7 +118,7 @@ class EditProfile extends React.Component {
       },
       address: {
         value: '',
-        valid: true,
+        valid: false,
         validation: {
           required: true,
         },
@@ -150,7 +151,7 @@ class EditProfile extends React.Component {
         },
         touched: false,
       },
-      isFormValid: true,
+      isFormValid: false,
       loaded: true,
       isLoading: false,
       isError: false,
@@ -159,6 +160,8 @@ class EditProfile extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
+    this.removeCategory = this.removeCategory.bind(this);
+    this.handleCategoriesKeyDown = this.handleCategoriesKeyDown.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleMultiSelectCat = this.handleMultiSelectCat.bind(this);
 
@@ -168,6 +171,11 @@ class EditProfile extends React.Component {
   async componentDidMount() {
     this._isMounted = true;
 
+    this.props.checkAuth();
+
+    if (!this.props.userId) {
+      this.props.history.push('/');
+    }
     try {
       this.setState({ loaded: false, isError: false });
       const countries = await getCountries();
@@ -175,32 +183,6 @@ class EditProfile extends React.Component {
       if (this._isMounted) this.setState({ countries, states, loaded: true });
     } catch (error) {
       this.setState({ loaded: true, isError: true });
-    }
-
-    // Get profile
-    const { userProfile, userData } = this.props;
-    const isProfile = await userProfile();
-    if (isProfile || userData) {
-      if (this._isMounted) {
-        const {
-          name, moto, phone, about, address, country, city, webLink, twitterLink, linkedInLink,
-        } = userData;
-        const roleData = {
-          category: '', categories: [], type: '', teamSize: '', moto: '',
-        };
-        if (this.props.role === 'sme') {
-          roleData.category = userData.category;
-          roleData.teamSize = userData.teamSize;
-          roleData.moto = userData.moto;
-        } else {
-          roleData.categories = [...userData.category];
-          roleData.type = userData.type;
-        }
-
-        this.setState((prevState) => ({
-          ...prevState, name: { ...this.state.name, value: name }, categories: { ...this.state.categories, value: roleData.categories }, category: { ...this.state.category, value: roleData.category }, moto: { ...this.state.moto, value: roleData.moto || '' }, phone: { ...this.state.phone, value: phone || '' }, address: { ...this.state.address, value: address }, about: { ...this.state.about, value: about }, type: { ...this.state.type, value: roleData.type }, country: { ...this.state.country, value: country }, city: { ...this.state.city, value: city }, webLink: { ...this.state.webLink, value: webLink || '' }, twitterLink: { ...this.state.twitterLink, value: twitterLink || '' }, linkedInLink: { ...this.state.linkedInLink, value: linkedInLink || '' }, teamSize: { ...this.state.teamSize, value: roleData.teamSize },
-        }));
-      }
     }
   }
 
@@ -271,6 +253,31 @@ class EditProfile extends React.Component {
     this.setState({ ...stateToUpdate, isFormValid, isLoading: false });
   }
 
+  removeCategory(i) {
+    const newCategories = [...this.state.categories.value].filter((_, ind) => ind !== i);
+    const isFormValid = isFormValidCheck(this.state) && this.state.categories.value.length > 0;
+    this.setState({ categories: { value: newCategories }, isFormValid });
+  }
+
+  handleCategoriesKeyDown(e) {
+    const val = e.target.value;
+    if (e.key === 'Enter' && val) {
+      if (this.state.categories.value.find((tag) => tag.toLowerCase() === val.toLowerCase())) {
+        return;
+      }
+      const isFormValid = isFormValidCheck(this.state);
+      this.setState({
+        categories: {
+          value: [...this.state.categories.value, val],
+        },
+        isFormValid,
+      });
+      this.tagInput.value = null;
+    } else if (e.key === 'Backspace' && !val) {
+      this.removeCategory(this.state.tags.length - 1);
+    }
+  }
+
   handleMultiSelectCat(e) {
     this.setState({
       categories: {
@@ -304,10 +311,8 @@ class EditProfile extends React.Component {
     } = this.state;
 
     const formData = new FormData();
-    if (profilePic.pic) {
-      formData.append('profilePic', profilePic.value);
-    }
 
+    formData.append('profilePic', profilePic.value);
     formData.append('userId', userId);
     formData.append('name', name.value);
     formData.append('phone', phone.value);
@@ -320,15 +325,15 @@ class EditProfile extends React.Component {
     formData.append('twitterLink', twitterLink.value);
     if (role === 'sme') {
       formData.append('teamSize', teamSize.value);
-      formData.append('moto', moto.value);
       formData.append('category', category.value);
+      formData.append('moto', moto.value);
     } else {
       formData.append('teamSize', 1);
       formData.append('type', type.value);
       formData.append('category', categories.value);
     }
 
-    const res = await this.props.updateProfile(formData);
+    const res = await this.props.createProfile(formData);
     if (res) {
       this.props.history.push('/dashboard/profile');
     }
@@ -359,7 +364,7 @@ class EditProfile extends React.Component {
       isError,
     } = this.state;
 
-    if (!loaded) {
+    if (!loaded || this.props.authLoaded) {
       return (
         <Container>
           <Skeleton width="100%" animation="wave" height={500} />
@@ -375,7 +380,7 @@ class EditProfile extends React.Component {
       <Container className="Profile">
         <Row>
           <Col>
-            <h2 className="text-center">Edit Your Profile</h2>
+            <h2 className="text-center">Create Your Profile</h2>
             {checkServerNetworkError(this.props.error) ? (
               <Alert variant="danger">{this.props.error.network}</Alert>
             ) : null}
@@ -402,7 +407,6 @@ class EditProfile extends React.Component {
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
-
               <Col sm={12} md={6}>
                 <Form.Group controlId="profilePic">
                   <Form.Label>Profile Picture</Form.Label>
@@ -425,7 +429,7 @@ class EditProfile extends React.Component {
 
             <Row>
               {this.props.role === 'sme' && (<>
-                <Col sm={12} md={this.props.role === 'sme' ? 4 : 6}>
+                <Col sm={12} md={4}>
                   <Form.Group controlId="teamSize">
                     <Form.Label>
                       Team Size <small>*</small>
@@ -447,7 +451,8 @@ class EditProfile extends React.Component {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-<Col sm={12} md={4}>
+
+                <Col sm={12} md={4}>
                 <Form.Group controlId="moto">
                   <Form.Label>Motto</Form.Label>
                   <Form.Control
@@ -462,8 +467,7 @@ class EditProfile extends React.Component {
                     {`${moto.valid ? 'Motto looks good' : 'Invalid motto entered'}`}
                   </Form.Control.Feedback>
                 </Form.Group>
-              </Col>
-                </>
+              </Col></>
               )}
 
               <Col sm={12} md={this.props.role === 'sme' ? 4 : 6}>
@@ -698,7 +702,7 @@ class EditProfile extends React.Component {
                     type="submit"
                     className="Auth-Button float-right"
                   >
-                    Update
+                    Save
                   </button>
                 )}
               </Col>
@@ -715,12 +719,12 @@ const mapStateToProps = ({ auth, user }) => ({
   role: auth.currentUser ? auth.currentUser.role : '',
   loading: user.loading,
   error: user.error,
-  userData: user.userData || null,
+  authLoading: auth.loading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  userProfile: () => dispatch(getProfile()),
-  updateProfile: (formData) => dispatch(updateUserProfile(formData)),
+  createProfile: (formData) => dispatch(createUserProfile(formData)),
+  checkAuth: () => dispatch(authCheckState()),
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EditProfile));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreateProfile));

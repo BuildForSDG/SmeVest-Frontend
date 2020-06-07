@@ -9,7 +9,7 @@ import {
   resetPassword,
 } from './auth';
 
-import { createUserProfile, getProfile } from './user';
+import { createUserProfile, getProfile, updateUserProfile } from './user';
 
 export {
   onSignUp,
@@ -22,4 +22,5 @@ export {
   resetPassword,
   createUserProfile,
   getProfile,
+  updateUserProfile,
 };

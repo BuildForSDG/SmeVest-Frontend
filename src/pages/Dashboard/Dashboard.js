@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import DashNav from '../../components/DashNav/DashNav';
 import Profile from '../../components/Profile/Profile';
+import CreateProfile from '../../components/Profile/CreateProfile';
 import EditProfile from '../../components/Profile/EditProfile';
 
 class Dashboard extends React.Component {
@@ -28,6 +29,10 @@ class Dashboard extends React.Component {
         <DashNav />
         <Switch>
           <Route path={`${this.props.match.url}/profile`} exact component={Profile} />
+          <Route
+            path={`${this.props.match.url}/profile/create`}
+            render={() => <CreateProfile currentUser={this.props.currentUser} />}
+          />
           <Route
             path={`${this.props.match.url}/profile/edit`}
             render={() => <EditProfile currentUser={this.props.currentUser} />}

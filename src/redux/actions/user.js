@@ -1,5 +1,5 @@
 import userTypes from '../types/user';
-import { createProfileApi, getProfileApi } from '../../utils/api';
+import { createProfileApi, getProfileApi, updateProfileApi } from '../../utils/api';
 
 export const createProfileStart = () => ({
   type: userTypes.PROFILE_START,
@@ -45,6 +45,22 @@ export const createUserProfile = (formData) => async (dispatch) => {
   }
 };
 
+export const updateUserProfile = (formData) => async (dispatch) => {
+  dispatch(createProfileStart());
+  try {
+    const { status, data } = await updateProfileApi(formData);
+    if (status === 200) {
+      dispatch(createProfileSuccess(data));
+      return true;
+    }
+    dispatch(createProfileFail({ network: 'Profile exist' }));
+    return false;
+  } catch (error) {
+    dispatch(createProfileFail({ network: 'Network Error' }));
+    return false;
+  }
+};
+
 export const getProfile = () => async (dispatch) => {
   dispatch(getProfileStart());
   try {
@@ -53,10 +69,10 @@ export const getProfile = () => async (dispatch) => {
       dispatch(getProfileSuccess(res.data));
       return true;
     }
-    dispatch(getProfileFail({ network: 'No profile yet, please update your profile' }));
+    dispatch(getProfileFail({ network: 'create your profile' }));
     return false;
   } catch (error) {
-    dispatch(getProfileFail({ network: 'Error fetching profile details or profile not updated' }));
+    dispatch(getProfileFail({ network: 'Error fetching profile details' }));
     return false;
   }
 };
