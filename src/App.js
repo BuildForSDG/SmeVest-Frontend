@@ -1,23 +1,11 @@
 import React from 'react';
-import {
-  BrowserRouter as Router, Route, Switch, Redirect,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { authCheckState } from './redux/actions/auth';
 
 // Components
-import { connect } from 'react-redux';
-import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
 import Home from './pages/Home/Home';
-import SignUp from './components/SignUp/SignUp';
-import SignIn from './components/SignIn/SignIn';
-import EmailVerification from './components/EmailVerification/EmailVerification';
-import NotFound from './components/NotFound/NotFound';
 import Dashboard from './pages/Dashboard/Dashboard';
-import ResendVerifyCode from './components/EmailVerification/ResendVerifyCode';
-import RequestLink from './components/PasswordReset/RequestLink';
-import PasswordReset from './components/PasswordReset/PasswordReset';
-
-import { authCheckState } from './redux/actions/auth';
 
 export class App extends React.Component {
   componentDidMount() {
@@ -27,22 +15,10 @@ export class App extends React.Component {
   render() {
     return (
       <Router>
-        <Header />
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/signin" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <SignIn />)} />
-          <Route path="/signup" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <SignUp />)} />
-          <Route path="/verify" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <EmailVerification />)} />
-          <Route
-            path="/resend-verify-code"
-            render={() => (this.props.loggedIn ? <Redirect to="/" /> : <ResendVerifyCode />)}
-          />
-          <Route path="/forgot-password" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <RequestLink />)} />
-          <Route path="/reset/:token" render={() => (this.props.loggedIn ? <Redirect to="/" /> : <PasswordReset />)} />
           <Route path="/dashboard" component={Dashboard} />
-          <Route component={NotFound} />
+          <Route path="/" render={() => <Home loggedIn={this.props.loggedIn} />} />
         </Switch>
-        <Footer />
       </Router>
     );
   }

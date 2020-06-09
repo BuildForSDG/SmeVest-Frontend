@@ -7,6 +7,7 @@ import {
   requestPasswordResetLinkApi,
   resetPasswordApi,
 } from '../../utils/api';
+import { ACCESS_TOKEN, USER_ID, ROLE } from '../../utils/constants';
 
 export const authStart = () => ({
   type: authTypes.AUTH_START,
@@ -68,9 +69,9 @@ export const onSignIn = ({ email, password }) => async (dispatch) => {
 
       if (isVerified) {
         // If account has been verified, store the userId, token and role in the localstorage
-        localStorage.setItem('userId', _id);
-        localStorage.setItem('AUTH_TOKEN', token);
-        localStorage.setItem('role', role);
+        localStorage.setItem(USER_ID, _id);
+        localStorage.setItem(ACCESS_TOKEN, token);
+        localStorage.setItem(ROLE, role);
         dispatch(onSignInSuccess({ _id, token, role }));
         return true;
       }
@@ -127,16 +128,17 @@ export const onSignUp = ({ email, password, role }) => async (dispatch) => {
 };
 
 export const signOut = () => (dispatch) => {
-  localStorage.removeItem('AUTH_TOKEN');
-  localStorage.removeItem('userId');
-  localStorage.removeItem('role');
+  localStorage.removeItem(ACCESS_TOKEN);
+  localStorage.removeItem(USER_ID);
+  localStorage.removeItem(ROLE);
   dispatch(signOutStart());
 };
 
 export const authCheckState = () => (dispatch) => {
-  const token = localStorage.getItem('AUTH_TOKEN');
-  const id = localStorage.getItem('userId');
-  const role = localStorage.getItem('role');
+  dispatch(authStart());
+  const token = localStorage.getItem(ACCESS_TOKEN);
+  const id = localStorage.getItem(USER_ID);
+  const role = localStorage.getItem(ROLE);
   if (!token) {
     dispatch(signOut());
   } else {

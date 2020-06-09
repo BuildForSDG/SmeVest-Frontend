@@ -1,0 +1,8 @@
+.DashNav .dropdown > a {
+  color: rgba(0, 0, 0, 0.5);
+  transition: 300ms;
+}
+
+.DashNav .dropdown > a:hover {
+  color: rgba(0, 0, 0, 0.9);
+}
